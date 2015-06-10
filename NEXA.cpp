@@ -47,7 +47,7 @@ NEXA::Receiver::on_interrupt(uint16_t arg)
   uint32_t stop = RTC::micros();
   uint32_t us = (stop - m_start);
   m_start = stop;
-  if (us < LOW_THRESHOLD || us > HIGH_THRESHOLD) goto exception;
+  if (UNLIKELY(us < LOW_THRESHOLD || us > HIGH_THRESHOLD)) goto exception;
   m_sample[m_ix & IX_MASK] = us;
   m_ix += 1;
 

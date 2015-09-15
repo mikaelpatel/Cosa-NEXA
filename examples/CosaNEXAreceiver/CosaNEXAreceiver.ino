@@ -65,7 +65,7 @@ public:
   virtual void on_event(uint8_t type, uint16_t value)
   {
     UNUSED(type);
-    m_pin << value;
+    m_pin.write(value);
   }
 };
 LED device(Board::LED);

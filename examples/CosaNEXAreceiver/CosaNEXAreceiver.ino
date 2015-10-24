@@ -85,7 +85,7 @@ void setup()
   // Use polling version to receive the remote button to attach
   NEXA::code_t cmd;
   receiver.recv(cmd);
-  device.set_key(cmd);
+  device.key(cmd);
   receiver.attach(&device);
 
   // Enable the interrupt driven version of the receiver

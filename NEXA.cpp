@@ -19,7 +19,7 @@
  */
 
 #include "NEXA.hh"
-#include "Cosa/RTC.hh"
+#include "Cosa/RTT.hh"
 
 IOStream& operator<<(IOStream& outs, NEXA::code_t code)
 {
@@ -38,13 +38,13 @@ NEXA::Receiver::on_interrupt(uint16_t arg)
   // Check start condition
   if (m_start == 0L) {
     if (is_clear()) return;
-    m_start = RTC::micros();
+    m_start = RTT::micros();
     m_ix = 0;
     return;
   }
 
   // Calculate the pulse width (both low and high) and check against threshold
-  uint32_t stop = RTC::micros();
+  uint32_t stop = RTT::micros();
   uint32_t us = (stop - m_start);
   m_start = stop;
   if (UNLIKELY(us < LOW_THRESHOLD || us > HIGH_THRESHOLD)) goto exception;
@@ -90,14 +90,14 @@ NEXA::Receiver::recv(code_t& cmd)
   do {
     // Wait for the start condition (triggered by low)
     while (is_low()) DELAY(1);
-    stop = RTC::micros();
+    stop = RTT::micros();
     // Collect the samples; high followed by low pulse
     ix = 0;
     while (ix < IX_MAX) {
       // Capture length of high period
       start = stop;
       while (is_high()) DELAY(1);
-      stop = RTC::micros();
+      stop = RTT::micros();
       us = stop - start;
       if (us < LOW_THRESHOLD || us > HIGH_THRESHOLD) break;
       m_sample[ix & IX_MASK] = us;
@@ -105,7 +105,7 @@ NEXA::Receiver::recv(code_t& cmd)
       // Capture length of low period
       start = stop;
       while (is_low()) DELAY(1);
-      stop = RTC::micros();
+      stop = RTT::micros();
       us = stop - start;
       if (us < LOW_THRESHOLD || us > HIGH_THRESHOLD) break;
       m_sample[ix & IX_MASK] = us;
@@ -151,6 +151,6 @@ NEXA::Transmitter::send_code(code_t cmd, int8_t onoff)
       }
     }
     send_pulse(0);
-    RTC::delay(PAUSE);
+    RTT::delay(PAUSE);
   }
 }

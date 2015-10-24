@@ -40,7 +40,7 @@
 #include <NEXA.h>
 
 #include "Cosa/OutputPin.hh"
-#include "Cosa/RTC.hh"
+#include "Cosa/RTT.hh"
 #include "Cosa/Watchdog.hh"
 
 // Enable sending of dimmer level (-1..-15)
@@ -56,8 +56,8 @@ OutputPin led(Board::LED);
 
 void setup()
 {
-  // Initiate Real-time clock and Watchdog
-  RTC::begin();
+  // Initiate RTT and Watchdog
+  RTT::begin();
   Watchdog::begin();
 
   // First code will be used by receiver as address (learning mode)

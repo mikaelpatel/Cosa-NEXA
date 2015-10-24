@@ -49,7 +49,7 @@
 #include <NEXA.h>
 
 #include "Cosa/OutputPin.hh"
-#include "Cosa/RTC.hh"
+#include "Cosa/RTT.hh"
 #include "Cosa/Event.hh"
 #include "Cosa/Watchdog.hh"
 
@@ -78,8 +78,8 @@ NEXA::Receiver receiver(Board::EXT0);
 
 void setup()
 {
-  // Initiate Real-Time Clock and Watchdog
-  RTC::begin();
+  // Initiate RTT and Watchdog
+  RTT::begin();
   Watchdog::begin();
 
   // Use polling version to receive the remote button to attach
